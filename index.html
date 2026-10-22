@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="no"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Emne 3 — Lab-oppsett</title>
+<style>
+  :root{
+    --navy:#0D1F4F; --ink:#1E2A38; --muted:#5C6B7E; --surface:#EEF2F6; --card:#fff; --rail:#E1E8EF;
+    --blue:#176C93; --green:#2E7D5B; --amber:#E0A32E; --red:#C0392B;
+    --soft-blue:#EAF1F6; --soft-green:#EAF3EC; --soft-amber:#FBF3E0; --soft-red:#FBEEEC;
+    --code-bg:#0D1F4F; --code-fg:#A6F0B0; --code-cmt:#8FB3C9;
+    --term-bg:#0b1020;
+    --sans:-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    --mono:"SF Mono",Consolas,"Courier New",monospace;
+  }
+  @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+    --navy:#132a63; --ink:#E6ECF3; --muted:#9FB0C2; --surface:#0B1320; --card:#121C2B; --rail:#24344A;
+    --blue:#54B4D8; --green:#4FB488; --amber:#E7B64B; --red:#E27A70;
+    --soft-blue:#16283c; --soft-green:#15291f; --soft-amber:#2a2413; --soft-red:#2c1917;
+    --code-bg:#060C14; --term-bg:#05080f; color-scheme:dark;
+  }}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--surface);color:var(--ink);font-family:var(--sans);line-height:1.55;font-size:15px}
+  .wrap{max-width:760px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:0 48px}
+  header{background:var(--navy);color:#fff;border-radius:0 0 16px 16px;padding:22px max(16px,env(safe-area-inset-left,0px)) 20px}
+  header .inner{max-width:760px;margin:0 auto}
+  .kick{font-size:11px;letter-spacing:1.6px;color:#8FB3C9;font-weight:700;text-transform:uppercase}
+  h1{font-family:Georgia,serif;font-size:26px;margin:7px 0 5px}
+  header p{margin:0;color:#C9D6E3;font-size:14px}
+  h2{font-family:Georgia,serif;color:var(--navy);font-size:19px;border-bottom:2px solid var(--navy);padding-bottom:5px;margin:26px 0 6px;display:flex;align-items:center;flex-wrap:wrap;gap:8px}
+  :root:not([data-theme="light"]) h2{color:var(--ink);border-color:var(--rail)}
+  h3{font-size:15px;margin:16px 0 4px;color:var(--ink)}
+  p{margin:6px 0 10px}
+  .expl{color:var(--muted);font-size:14px}
+  ol,ul{margin:6px 0 10px;padding-left:20px}
+  li{margin:3px 0}
+  code.inl{font-family:var(--mono);background:var(--navy);color:#A6F0B0;padding:1px 5px;border-radius:4px;font-size:.85em}
+  :root:not([data-theme="light"]) code.inl{background:#0b1830}
+  .sub{font-weight:700;color:var(--blue);margin:14px 0 4px;font-size:14px}
+
+  .loc{font-size:11px;font-weight:700;letter-spacing:.4px;text-transform:uppercase;padding:2px 10px;border-radius:20px;white-space:nowrap}
+  .loc.kali{background:var(--soft-blue);color:var(--blue);border:1px solid var(--blue)}
+  .loc.victim{background:var(--soft-green);color:var(--green);border:1px solid var(--green)}
+
+  .block{position:relative;background:var(--code-bg);border-radius:10px;margin:8px 0 14px;overflow:hidden}
+  .block pre{margin:0;padding:14px 15px;padding-top:34px;overflow-x:auto;font-family:var(--mono);font-size:13px;line-height:1.55;color:var(--code-fg);white-space:pre}
+  .block .cmt{color:var(--code-cmt)}
+  .copy{position:absolute;top:7px;right:7px;background:rgba(255,255,255,.12);color:#cfe;border:1px solid rgba(255,255,255,.2);border-radius:7px;font-family:var(--sans);font-size:12px;font-weight:700;padding:5px 12px;cursor:pointer}
+  .copy:hover{background:rgba(255,255,255,.22)}
+  .copy.ok{background:var(--green);color:#fff;border-color:var(--green)}
+
+  /* terminal-eksempel */
+  .term{background:var(--term-bg);border-radius:10px;overflow:hidden;margin:10px 0;border:1px solid #223}
+  .term .bar{background:#161c2e;padding:8px 12px;display:flex;align-items:center;gap:7px}
+  .term .bar .dot{width:11px;height:11px;border-radius:50%}
+  .term .bar .r{background:#ff5f57}.term .bar .y{background:#febc2e}.term .bar .g{background:#28c840}
+  .term .bar .ttl{color:#8f9bb3;font-size:12px;margin-left:8px;font-family:var(--mono)}
+  .term pre{margin:0;padding:13px 15px;font-family:var(--mono);font-size:12.5px;line-height:1.7;color:#cdd6e6;white-space:pre-wrap;word-break:break-word}
+  .term .kali{color:#56c2f0;font-weight:700}
+  .term .vic{color:#7ee081;font-weight:700}
+  .term .you{color:#f2c879}
+  .term .dim{color:#7c88a0}
+
+  .note{background:var(--soft-blue);border-left:4px solid var(--blue);border-radius:6px;padding:9px 13px;margin:10px 0;font-size:13.5px}
+  .warn{background:var(--soft-red);border-left:4px solid var(--red);border-radius:6px;padding:9px 13px;margin:10px 0;font-size:13.5px}
+  .warn b{color:var(--red)}
+  .tip{background:var(--soft-green);border-left:4px solid var(--green);border-radius:6px;padding:9px 13px;margin:10px 0;font-size:13.5px}
+  .tip b{color:var(--green)}
+
+  .tabs{display:flex;gap:8px;margin:4px 0 10px}
+  .tabs button{font-family:var(--sans);font-weight:700;font-size:14px;border:1px solid var(--rail);background:var(--card);color:var(--muted);border-radius:9px;padding:9px 18px;cursor:pointer}
+  .tabs button[aria-selected="true"]{background:var(--navy);color:#fff;border-color:var(--navy)}
+  :root:not([data-theme="light"]) .tabs button[aria-selected="true"]{background:var(--blue);border-color:var(--blue)}
+  .card{background:var(--card);border:1px solid var(--rail);border-radius:10px;padding:12px 15px;margin:8px 0}
+  [hidden]{display:none!important}
+  footer{color:var(--muted);font-size:12.5px;text-align:center;margin-top:30px}
+</style></head><body>
+
+<header><div class="inner">
+  <div class="kick">Gokstad Akademiet · Emne 3 · ACS103</div>
+  <h1>Lab-oppsett</h1>
+  <p>Komplett oppsett fra import til ferdig SOC. Velg plattform, og klikk «Kopier» på hver kommando.</p>
+</div></header>
+
+<div class="wrap">
+
+  <div class="warn"><b>Viktig:</b> victim er med vilje sårbar. Kjør laben kun i et eget, isolert miljø, aldri på skole- eller hjemmenettet. Nettverket settes opp litt ulikt på Windows og Mac, se «Før du starter» for din plattform.</div>
+
+  <h2>Hvor jobber du fra?</h2>
+  <p class="expl">Du har to maskiner. <b style="color:var(--blue)">Kali</b> er angriperen, der du styrer alt. <b style="color:var(--green)">Victim</b> er målet. Fra Steg 2 kobler du deg til victim med <b>SSH</b> (fjerninnlogging i terminalen) og jobber på den derfra.</p>
+  <p class="expl">Hvert steg under er merket <span class="loc kali">Fra Kali</span> eller <span class="loc victim">På victim</span>. Og prompten i terminalen forteller deg alltid hvor du er: teksten før <code class="inl">:</code> er maskinnavnet.</p>
+
+  <h2>Velg plattform</h2>
+  <p class="expl">Last ned victim-maskinen fra Teams-kanalen og pakk ut zip-fila før du importerer. Kali og victim kjører samtidig, så PC-en bør ha minst 16 GB RAM og ~40 GB ledig disk. Av dette gir du Kali-VM-en ~6 GB RAM (victim klarer seg med 2).</p>
+  <div class="tabs" id="tabs" role="tablist">
+    <button role="tab" data-tab="win" aria-selected="true">Windows</button>
+    <button role="tab" data-tab="mac" aria-selected="false">Mac (Apple Silicon)</button>
+  </div>
+
+  <!-- ===== WINDOWS SETUP ===== -->
+  <div data-os="win">
+    <h2>Før du starter (Windows)</h2>
+    <div class="card">
+      <h3>1. Installer hypervisoren</h3>
+      <p class="expl">En hypervisor er programmet som kjører de virtuelle maskinene. Har du allerede Kali i VirtualBox eller VMware, har du den og kan gå videre. Ellers installer VirtualBox (virtualbox.org) eller VMware Workstation, og start den én gang.</p>
+      <h3>2. Last ned og pakk ut victim</h3>
+      <p class="expl">Hent <code class="inl">emne3-victim.windows.zip</code> fra Filer i Teams-kanalen. Høyreklikk og pakk ut, så du får en <code class="inl">.ova</code>-fil (en ferdig maskin du kan importere).</p>
+      <h3>3. Importer maskinen</h3>
+      <ul>
+        <li><b>VirtualBox:</b> File, så Import Appliance, velg .ova-fila, og Import.</li>
+        <li><b>VMware:</b> File, så Open, velg .ova-fila, og Import. Godta om den advarer om spesifikasjon.</li>
+      </ul>
+      <h3>4. Sett nettverket til Host-Only</h3>
+      <p class="expl">Host-Only er et lukket nett mellom dine egne maskiner, uten internett. Victim skal bare ha dette. Kali skal i tillegg ha NAT, som gir Kali internett.</p>
+      <ul>
+        <li><b>Victim:</b> Settings, Network, Adapter 1 = Host-only. Ikke flere adaptere.</li>
+        <li><b>Kali:</b> Adapter 1 = samme Host-only, Adapter 2 = NAT. La begge stå på.</li>
+        <li>VirtualBox: mangler du host-only-nettet, lag det i File, Tools, Network Manager (la DHCP stå på). VMware: bruk Host-only (VMnet1) og NAT (VMnet8).</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ===== MAC SETUP ===== -->
+  <div data-os="mac" hidden>
+    <h2>Før du starter (Mac)</h2>
+    <div class="card">
+      <h3>1. Installer UTM</h3>
+      <p class="expl">UTM er programmet som kjører de virtuelle maskinene på Mac. Har du allerede Kali i UTM, gå videre. Ellers last ned UTM fra mac.getutm.app (eller App Store), dra den til Programmer, og start den én gang.</p>
+      <h3>2. Last ned og pakk ut victim</h3>
+      <p class="expl">Hent <code class="inl">emne3-victim-macbook.utm.zip</code> fra Filer i Teams-kanalen. Dobbeltklikk for å pakke ut, så du får en <code class="inl">.utm</code>-fil (en ferdig maskin).</p>
+      <h3>3. Åpne maskinen i UTM</h3>
+      <p class="expl">Dobbeltklikk <code class="inl">.utm</code>-fila, eller dra den inn i UTM. Spør den om ny UUID, svar <b>ja</b>. Feiler starten med <code class="inl">edk2-arm-vars.fd doesn't exist</code>: avslutt UTM helt (Cmd+Q), åpne på nytt, og prøv igjen.</p>
+      <h3>4. Sett opp nettverket</h3>
+      <p class="expl">På UTM har hver maskin bare ett nettverkskort om gangen, så du kan ikke ha både internett og host-only samtidig. Begge maskinene skal stå i samme modus (rediger innstillinger, Network, Network Mode).</p>
+      <p class="expl">Sett <b>begge til Shared Network</b>, og la dem stå slik hele laben. Da har de internett (Kali trenger det for oppsett-scriptet) og de når hverandre, og IP-ene holder seg stabile.</p>
+      <div class="warn"><b>Ikke bytt nettverksmodus etter at SOC-en er satt opp.</b> Da endres IP-ene, og Wazuh-agenten mister kontakten med Kali (du måtte i så fall kjørt Steg 5 på nytt med Kali sin nye IP). Begge på Shared betyr at victim også har internett, men det er greit for denne laben.</div>
+    </div>
+  </div>
+
+  <h2>Steg 1: Logg inn og finn IP <span class="loc victim">På victim</span></h2>
+  <p class="expl">Dette gjør du i selve victim-vinduet (konsollen), ikke over SSH ennå. Logg inn med bruker <code class="inl">labadmin</code> og passord <code class="inl">labadmin2026</code>, og finn maskinens IP-adresse. Skriv den ned, du trenger den fra Kali i neste steg.</p>
+  <div class="block"><button class="copy" type="button">Kopier</button><pre>hostname -I</pre></div>
+
+  <h2>Steg 2: Finn victim og koble til <span class="loc kali">Fra Kali</span></h2>
+  <p class="expl">Start Kali og åpne en terminal der. <b>Kjør én linje om gangen</b>, og bytt inn dine egne verdier underveis. Først finner du ditt eget nett, så leter du opp victim, og til slutt logger du inn på den.</p>
+  <div class="note">Bytt <code class="inl">.x</code> til ditt eget nett og <code class="inl">&lt;victim-ip&gt;</code> til victim sin adresse. <code class="inl">netdiscover</code> kjører til du ser victim i lista, så stopper du den med <b>Ctrl+C</b>.</div>
+  <div class="sub">Finn ditt nett (Kali sin IP på lab-nettet)</div>
+  <div class="block"><button class="copy" type="button">Kopier</button><pre>ip -4 addr | grep 192.168</pre></div>
+  <div class="sub">Let opp victim (bytt .x), stopp med Ctrl+C når du ser den</div>
+  <div class="block"><button class="copy" type="button">Kopier</button><pre>sudo netdiscover -r 192.168.x.0/24</pre></div>
+  <div class="sub">Test kontakt (bytt &lt;victim-ip&gt;)</div>
+  <div class="block"><button class="copy" type="button">Kopier</button><pre>ping -c 3 &lt;victim-ip&gt;</pre></div>
+  <div class="sub">Logg inn med SSH fra Kali Linux (bytt &lt;victim-ip&gt;)</div>
+  <div class="block"><button class="copy" type="button">Kopier</button><pre>ssh labadmin@&lt;victim-ip&gt;</pre></div>
+  <div class="expl" style="margin:-4px 0 6px">Slik ser innloggingen ut i terminalen på Kali Linux:</div>
+  <div class="term">
+    <div class="bar"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="ttl">Kali — SSH til victim</span></div>
+<pre><span class="kali">kali@kali</span>:~$ <span class="you">ssh labadmin@192.168.64.9</span>
+<span class="dim">The authenticity of host '192.168.64.9' can't be established.
+Are you sure you want to continue connecting (yes/no)?</span> <span class="you">yes</span>
+<span class="dim">labadmin@192.168.64.9's password:</span> <span class="dim">(skriv labadmin2026 — vises ikke)</span>
+<span class="dim">Welcome to Ubuntu 26.04 LTS</span>
+<span class="vic">labadmin@emne3-victim</span>:~$ <span class="dim"># du er nå PÅ victim</span></pre>
+  </div>
+  <div class="tip"><b>Prompten er kompasset ditt.</b> <code class="inl">kali@kali</code> = du står på Kali. <code class="inl">labadmin@emne3-victim</code> = du er inne på victim via SSH. Vil du tilbake til Kali, skriv <code class="inl">exit</code>. Resten av victim-stegene kjører i dette vinduet.</div>
+
+  <h2>Steg 3: Sett opp Suricata <span class="loc victim">På victim</span></h2>
+  <p class="expl">Dette gjør du i SSH-økta fra forrige steg (prompten skal vise <code class="inl">labadmin@emne3-victim</code>). Kjør de tre blokkene i rekkefølge, og vent til hver er ferdig før du går videre.</p>
+  <div class="sub">Blokk 1 — finn og sett riktig nettverkskort (kortet på lab-nettet, med 192.168-adressen)</div>
+  <div class="block"><button class="copy" type="button">Kopier</button><pre>ip -br a
+<span class="cmt"># velg nettverkskortet paa lab-nettet (192.168), hopp over docker/veth</span>
+GW=$(ip route show default 2>/dev/null | awk '{print $5; exit}')
+IFACE=$(ip -br -4 addr | awk -v gw="$GW" '$1!=gw &amp;&amp; $1!~/^(lo|docker|br-|veth|virbr)/ &amp;&amp; $3 ~ /^192\.168\./ {print $1; exit}')
+[ -z "$IFACE" ] &amp;&amp; IFACE=$(ip -br -4 addr | awk '$1!~/^(lo|docker|br-|veth|virbr)/ &amp;&amp; $3 ~ /^192\.168\./ {print $1; exit}')
+echo "Suricata skal lytte paa: $IFACE"
+sudo sed -i "0,/- interface:.*/ s//- interface: $IFACE/" /etc/suricata/suricata.yaml</pre></div>
+  <div class="expl" style="margin:-6px 0 8px">Ber den om passord, skriv <code class="inl">labadmin2026</code> (vises ikke) og trykk Enter.</div>
+  <div class="sub">Blokk 2 — reparer lab-regelen (SID 1000005)</div>
+  <div class="block"><button class="copy" type="button">Kopier</button><pre>sudo sed -i '/sid:1000005/d' /var/lib/suricata/rules/local.rules
+printf '%s\n' 'alert http any any -&gt; $HOME_NET any (msg:"LAB command-injection"; flow:to_server; http.uri; content:"ping.php"; content:"host="; pcre:"/host=[^&amp;]*[\x3b&amp;|\x60]/U"; classtype:web-application-attack; sid:1000005; rev:2;)' | sudo tee -a /var/lib/suricata/rules/local.rules &gt;/dev/null</pre></div>
+  <div class="expl" style="margin:-6px 0 8px">Ingen utskrift her betyr at det gikk bra.</div>
+  <div class="sub">Blokk 3 — start Suricata og sjekk at den kjører</div>
+  <div class="block"><button class="copy" type="button">Kopier</button><pre>sudo systemctl restart suricata &amp;&amp; sleep 5 &amp;&amp; systemctl is-active suricata</pre></div>
+  <div class="tip"><b>Den skal svare <code class="inl">active</code>.</b> Får du det, er Suricata ferdig.</div>
+
+  <h2>Steg 4: Sett opp Wazuh-serveren <span class="loc kali">Fra Kali</span></h2>
+  <p class="expl">Dette kjører du på Kali, ikke på victim. Vil du tilbake til Kali fra SSH-økta, skriv <code class="inl">exit</code> først (eller bruk et eget Kali-terminalvindu). Pass på at Kali har internett (Windows: NAT-adapteren på. Mac: Shared Network). Scriptet henter og starter hele SOC-en, og skriver til slutt ut innloggingen til dashbordet og connect-linja til victim. Ta vare på den teksten.</p>
+  <div class="block"><button class="copy" type="button">Kopier</button><pre>cd ~
+curl -O https://nocryptoshade.github.io/e3/setup-soc-wazuh.sh
+ls -l setup-soc-wazuh.sh
+sudo bash setup-soc-wazuh.sh</pre></div>
+  <div class="note">Feiler Docker-installasjonen (gammel Kali), kjør dette først og deretter scriptet på nytt:</div>
+  <div class="block"><button class="copy" type="button">Kopier</button><pre>sudo apt update
+sudo apt full-upgrade -y
+sudo reboot</pre></div>
+  <p class="expl">Åpne dashbordet i Kali sin Firefox på <code class="inl">https://localhost</code> og godta det selvsignerte sertifikatet. Første oppstart tar et par minutter.</p>
+
+  <h2>Steg 5: Koble agenten til Kali <span class="loc victim">På victim</span></h2>
+  <p class="expl">Tilbake på victim (SSH-økta). Du limer inn connect-linja scriptet skrev ut i Steg 4, der <code class="inl">&lt;KALI-IP&gt;</code> er Kali sin IP på lab-nettet. Den peker agenten mot Kali og starter den.</p>
+  <div class="block"><button class="copy" type="button">Kopier</button><pre>sudo sed -i 's|&lt;address&gt;.*&lt;/address&gt;|&lt;address&gt;&lt;KALI-IP&gt;&lt;/address&gt;|' /var/ossec/etc/ossec.conf
+sudo systemctl enable --now wazuh-agent</pre></div>
+  <div class="tip">I dashbordet (på Kali) under <b>Agents</b> skal victim vise <code class="inl">Active</code> innen et minutt.</div>
+
+  <h2>Steg 6: Send Suricata-alarmene til Wazuh <span class="loc victim">På victim</span></h2>
+  <p class="expl">Fortsatt på victim. Dette lar Wazuh-agenten lese Suricata sine alarmer, så alt samles i ett dashbord. Kopier hele blokka og lim inn samlet.</p>
+  <div class="block"><button class="copy" type="button">Kopier</button><pre>sudo python3 - &lt;&lt;'PY'
+from pathlib import Path
+p = Path("/var/ossec/etc/ossec.conf")
+s = p.read_text()
+entry = """  &lt;localfile&gt;
+    &lt;log_format&gt;json&lt;/log_format&gt;
+    &lt;location&gt;/var/log/suricata/eve.json&lt;/location&gt;
+  &lt;/localfile&gt;
+"""
+if "/var/log/suricata/eve.json" not in s:
+    s = s.replace("&lt;/ossec_config&gt;", entry + "\n&lt;/ossec_config&gt;")
+    p.write_text(s)
+    print("Suricata log collection added.")
+else:
+    print("Suricata log collection is already configured.")
+PY
+sudo systemctl restart wazuh-agent</pre></div>
+  <div class="tip">Skriver den <code class="inl">Suricata log collection added</code> (eller «already configured»), er det på plass.</div>
+
+  <h2>Steg 7: Sjekk at alt virker <span class="loc kali">Fra Kali</span></h2>
+  <p class="expl">På Kali: kjør noen angrep mot victim, og se at de dukker opp i dashbordet. Bytt IP-en til victim sin.</p>
+  <div class="block"><button class="copy" type="button">Kopier</button><pre>VICTIM=192.168.x.x
+curl -s -o /dev/null "http://$VICTIM/portal/ping.php?host=127.0.0.1;id"
+hydra -l baduser -p wrongpass -t1 ssh://$VICTIM</pre></div>
+  <p class="expl">I dashbordet: Threat Hunting, filtrer på <code class="inl">rule.groups: authentication_failed</code> for host-hendelser, og <code class="inl">rule.groups:suricata</code> for nettverksalarmer.</p>
+
+  <footer>Gokstad Akademiet — Emne 3 (ACS103). Alt kjøres kun i eget, isolert lab-miljø.</footer>
+</div>
+
+<script>
+(function(){
+  var tabs=[].slice.call(document.querySelectorAll('#tabs button'));
+  var panels=[].slice.call(document.querySelectorAll('[data-os]'));
+  function pick(os){
+    tabs.forEach(function(b){b.setAttribute('aria-selected', b.dataset.tab===os?'true':'false');});
+    panels.forEach(function(p){p.hidden = p.getAttribute('data-os')!==os;});
+    try{localStorage.setItem('e3os',os);}catch(e){}
+  }
+  tabs.forEach(function(b){b.addEventListener('click',function(){pick(b.dataset.tab);});});
+  var saved; try{saved=localStorage.getItem('e3os');}catch(e){}
+  pick(saved==='mac'?'mac':'win');
+})();
+document.querySelectorAll('.block').forEach(function(block){
+  var btn=block.querySelector('.copy'), pre=block.querySelector('pre');
+  btn.addEventListener('click',function(){
+    var txt=pre.innerText;
+    function ok(){btn.textContent='Kopiert ✓';btn.classList.add('ok');setTimeout(function(){btn.textContent='Kopier';btn.classList.remove('ok');},1400);}
+    if(navigator.clipboard&&navigator.clipboard.writeText){
+      navigator.clipboard.writeText(txt).then(ok).catch(sel);
+    }else{sel();}
+    function sel(){try{var r=document.createRange();r.selectNodeContents(pre);var s=window.getSelection();s.removeAllRanges();s.addRange(r);document.execCommand&&document.execCommand('copy');ok();}catch(e){}}
+  });
+});
+</script>
+</body></html>
